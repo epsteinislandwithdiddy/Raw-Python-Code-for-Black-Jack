@@ -3,7 +3,7 @@ import random
 
 def card_dealing():
   card_deck = ['Ace', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Joker', 'Queen', 'King']
-  cards = card_deck * 3  #change this if you want to change the size of the deck, x4 is for 52 cards which is standard, its currently 39
+  cards = card_deck * 4  #change this if you want to change the size of the deck, x4 is for 52 cards which is standard, its currently 39
   random.shuffle(cards)
   return cards
 
@@ -17,7 +17,15 @@ def ValueForHand(hand):
         elif card in ['Joker', 'Queen', 'King']:
             values += 10
   return values
-
+  
+def adjust_for_ace(hand):
+    value = ValueForHand(hand)
+    aces = hand.count('Ace')
+    while value <= 11 and aces:
+        value += 10
+        aces -= 1
+    return value
+  
 def convertnum(hand):
     value_conversion = {'Ace': 1, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5,'6': 6, '7': 7, '8': 8, '9': 9, '10': 10,'Joker': 10, 'Queen': 10, 'King': 10}
     return [value_conversion[card] for card in hand]
@@ -32,13 +40,13 @@ def addtohand(deck, hand):
 def playervsdealer():
   deck= card_dealing()
   player_hand = [deck.pop(), deck.pop()]
-  dealer_hand = [deck.pop()]
+  dealer_hand = [deck.pop(), deck.pop()]
 
 
   print('Welcome to the casino. Get ready to win big or lose it all!')
   print('Your starting hand is', player_hand)
-  print(f'Your value is ,{convertnum(player_hand)}, and your total is {ValueForHand(player_hand)}')
-  print(f'The Dealer value is ,{convertnum(dealer_hand)}, and the total is {ValueForHand(dealer_hand)}')
+  print(f'Your value is {convertnum(player_hand)}, and your total is {ValueForHand(player_hand)}')
+  print(f'The Dealer value is {convertnum(dealer_hand)}, and the total is {ValueForHand(dealer_hand)}')
 
   while True:
     player_choice = input('Would you like to hit or stand? ')
